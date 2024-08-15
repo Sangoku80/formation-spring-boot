@@ -3,7 +3,7 @@ volumes:
 
 services:
   app:
-    image: your-spring-boot-app-image
+    image: avis:latest
     build:
       context: .
     ports:
