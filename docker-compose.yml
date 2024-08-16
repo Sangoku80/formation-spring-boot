@@ -1,9 +1,8 @@
-volumes:
-  data:
-
 services:
+
   app:
     image: avis:latest
+    restart: always
     build:
       context: .
     ports:
@@ -19,7 +18,6 @@ services:
       SPRING_JPA_HIBERNATE_NAMING_PHYSICAL_STATEGY: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     networks:
       - app-network
-
   db:
     image: mariadb:10.7
     restart: always
@@ -42,6 +40,17 @@ services:
     networks:
       - app-network
 
+  frontend:
+    image: avis-frontend:latest  # Utilise l'image Docker créée pour ton frontend
+    restart: always
+    ports:
+      - "3000:80"  # Mappe le port 3000 de l'hôte sur le port 80 du conteneur Nginx
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  data:
