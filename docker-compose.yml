@@ -1,7 +1,7 @@
 services:
 
   app:
-    image: sangoku80/avis:latest
+    image: avis:latest
     restart: always
     build:
       context: .
@@ -41,7 +41,7 @@ services:
       - app-network
 
   frontend:
-    image: sangoku80/avis-frontend:latest  # Utilise l'image Docker créée pour ton frontend
+    image: avis-frontend:latest  # Utilise l'image Docker créée pour ton frontend
     restart: always
     ports:
       - "3000:80"  # Mappe le port 3000 de l'hôte sur le port 80 du conteneur Nginx

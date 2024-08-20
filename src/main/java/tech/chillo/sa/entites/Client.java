@@ -89,5 +89,4 @@ public class Client {
     public void setSentiments(List<Sentiment> sentiments) {
         this.sentiments = sentiments;
     }
-
 }
