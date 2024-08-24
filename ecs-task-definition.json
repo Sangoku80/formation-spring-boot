@@ -1,0 +1,109 @@
+{
+  "family": "myAppTaskDefinition",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::381492030595:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "app",
+      "image": "public.ecr.aws/z7r7i4z0/formation-spring-boot-app:latest",
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/myAppLogGroup",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        { "name": "SPRING_DATASOURCE_URL", "value": "jdbc:mariadb://db:3306/SA" },
+        { "name": "SPRING_DATASOURCE_USERNAME", "value": "root" },
+        { "name": "SPRING_DATASOURCE_PASSWORD", "value": "root" },
+        { "name": "SPRING_DATASOURCE_DRIVER_CLASS_NAME", "value": "org.mariadb.jdbc.Driver" },
+        { "name": "SPRING_JPA_HIBERNATE_DDL_AUTO", "value": "update" },
+        { "name": "SPRING_JPA_HIBERNATE_NAMING_PHYSICAL_STATEGY", "value": "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl" }
+      ],
+      "memoryReservation": 50,
+      "cpu": 50,
+      "mountPoints": [
+        {
+          "sourceVolume": "data",
+          "containerPath": "/var/lib/mysql",
+          "readOnly": false
+        }
+      ]
+    },
+    {
+      "name": "db",
+      "image": "public.ecr.aws/z7r7i4z0/mariadb:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 3306,
+          "hostPort": 3306,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        { "name": "MARIADB_ROOT_PASSWORD", "value": "root" },
+        { "name": "MARIADB_DATABASE", "value": "SA" }
+      ],
+      "memoryReservation": 50,
+      "cpu": 50,
+      "mountPoints": [
+        {
+          "sourceVolume": "data",
+          "containerPath": "/var/lib/mysql",
+          "readOnly": false
+        }
+      ]
+    },
+    {
+      "name": "adminer",
+      "image": "public.ecr.aws/z7r7i4z0/adminer:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8081,
+          "hostPort": 8081,
+          "protocol": "tcp"
+        }
+      ],
+      "memoryReservation": 50,
+      "cpu": 50
+    },
+    {
+      "name": "frontend",
+      "image": "public.ecr.aws/z7r7i4z0/formation-spring-boot-frontend:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp"
+        }
+      ],
+      "memoryReservation": 50,
+      "cpu": 50
+    }
+  ],
+  "volumes": [
+    {
+      "name": "data",
+      "efsVolumeConfiguration": {
+        "fileSystemId": "fs-12345678",
+        "rootDirectory": "/"
+      }
+    }
+  ]
+}

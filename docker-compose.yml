@@ -1,10 +1,7 @@
 services:
-
   app:
+    image: myapp:latest
     restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
@@ -18,6 +15,14 @@ services:
       SPRING_JPA_HIBERNATE_NAMING_PHYSICAL_STATEGY: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: '512M'
+      restart_policy:
+        condition: on-failure
+
   db:
     image: mariadb:10.7
     restart: always
@@ -31,6 +36,13 @@ services:
       - ./src/main/resources/sql:/docker-entrypoint-initdb.d
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '256M'
+      restart_policy:
+        condition: on-failure
 
   adminer:
     image: adminer
@@ -39,6 +51,13 @@ services:
       - "9080:8080"
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.10'
+          memory: '128M'
+      restart_policy:
+        condition: on-failure
 
   frontend:
     build:
@@ -46,9 +65,16 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "3000:80"  # Mappe le port 3000 de l'hôte sur le port 80 du conteneur Nginx
+      - "3000:80"
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '256M'
+      restart_policy:
+        condition: on-failure
 
 networks:
   app-network:
