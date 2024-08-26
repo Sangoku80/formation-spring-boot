@@ -15,13 +15,6 @@ services:
       SPRING_JPA_HIBERNATE_NAMING_PHYSICAL_STATEGY: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     networks:
       - app-network
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: '512M'
-      restart_policy:
-        condition: on-failure
 
   db:
     image: mariadb:10.7
@@ -36,13 +29,6 @@ services:
       - ./src/main/resources/sql:/docker-entrypoint-initdb.d
     networks:
       - app-network
-    deploy:
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: '256M'
-      restart_policy:
-        condition: on-failure
 
   adminer:
     image: adminer
@@ -51,13 +37,6 @@ services:
       - "9080:8080"
     networks:
       - app-network
-    deploy:
-      resources:
-        limits:
-          cpus: '0.10'
-          memory: '128M'
-      restart_policy:
-        condition: on-failure
 
   frontend:
     build:
@@ -68,13 +47,6 @@ services:
       - "3000:80"
     networks:
       - app-network
-    deploy:
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: '256M'
-      restart_policy:
-        condition: on-failure
 
 networks:
   app-network:

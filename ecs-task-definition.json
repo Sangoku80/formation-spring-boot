@@ -13,7 +13,7 @@
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/myAppLogGroup",
+          "awslogs-group": "/ecs/avis-utilisateurs-task",
           "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -101,7 +101,7 @@
     {
       "name": "data",
       "efsVolumeConfiguration": {
-        "fileSystemId": "fs-12345678",
+        "fileSystemId": "fs-09a7f1957beace703",
         "rootDirectory": "/"
       }
     }
