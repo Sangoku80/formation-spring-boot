@@ -14,7 +14,7 @@ function App() {
   const onSubmit = async(data) => {
     try {
       await fetch(
-        "http://localhost:8080/api/sentiment",
+        "http://52.91.27.114:8080/api/sentiment",
         {
           method: "POST",
           headers: {"Content-Type":'application/json'},
