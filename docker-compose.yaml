@@ -2,7 +2,9 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.build
+      target: build
+    image: myapp:latest
     restart: always
     ports:
       - "8080:8080"
